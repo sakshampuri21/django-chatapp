@@ -1,0 +1,23 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Locked</title>
+    <link rel="stylesheet" href="{% static 'your_app/styles.css' %}">  <!-- Optional: Link to your CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Account Locked</h1>
+        <p>Your account has been locked due to too many failed login attempts.</p>
+        <p>Please try again later. If you believe this is a mistake, contact support.</p>
+        <a href="{% url 'login' %}">Back to Login</a>  <!-- Adjust the URL if needed -->
+    </div>
+</body>
+</html>
+
+{% endblock %}

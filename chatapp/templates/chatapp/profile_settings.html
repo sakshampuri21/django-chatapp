@@ -1,0 +1,97 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .profile-settings-container {
+        max-width: 400px; /* Set a maximum width for the container */
+        margin: 20px auto; /* Center the container */
+        padding: 20px; /* Add padding around the container */
+        border: 1px solid #ccc; /* Add a border */
+        border-radius: 8px; /* Round the corners */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a shadow */
+        background-color: #fff; /* Set a background color */
+        text-align: center; /* Center align text */
+    }
+
+    h1 {
+        text-align: center; /* Center the header */
+        color: #333; /* Set a header color */
+    }
+
+    label {
+        display: block; /* Make labels block elements */
+        margin: 10px 0 5px; /* Add margin for spacing */
+        font-weight: bold; /* Make the label bold */
+    }
+
+    input[type="text"],
+    input[type="file"],
+    textarea {
+        width: 100%; /* Make inputs full width */
+        padding: 10px; /* Add padding inside the inputs */
+        border: 1px solid #ccc; /* Set border for inputs */
+        border-radius: 4px; /* Round the corners of inputs */
+        box-sizing: border-box; /* Ensure padding is included in width */
+    }
+
+    button {
+        width: 100%; /* Make the button full width */
+        padding: 10px; /* Add padding for button */
+        background-color: #007bff; /* Set a background color */
+        color: white; /* Set text color */
+        border: none; /* Remove default border */
+        border-radius: 4px; /* Round the corners of the button */
+        cursor: pointer; /* Change cursor on hover */
+        font-size: 16px; /* Set font size */
+        margin-top: 10px; /* Add margin to the top of the button */
+    }
+
+    button:hover {
+        background-color: #0056b3; /* Change button color on hover */
+    }
+
+    .profile-image {
+        width: 100px; /* Set a fixed width for the image */
+        height: 100px; /* Set a fixed height for the image */
+        border-radius: 50%; /* Make the image circular */
+        object-fit: cover; /* Crop the image to fit */
+        margin-bottom: 20px; /* Space below the image */
+    }
+</style>
+
+<div class="profile-settings-container">
+    <h1>Profile Settings</h1>
+    
+    <!-- Display current profile image -->
+    {% if request.user.profile.profileimg %}
+        <img src="{{ request.user.profile.profileimg.url }}" alt="Profile Image" class="profile-image">
+    {% else %}
+        <img src="/media/images/defaultimage.jpeg" alt="Default Profile Image" class="profile-image">
+    {% endif %}
+    
+    <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data"> <!-- Add enctype for file uploads -->
+        {% csrf_token %}
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" value="{{ request.user.username }}" required><br>
+
+        <label for="username">Name:</label>
+        <input type="text" id="name" name="name" value="{{ request.user.profile.name }}" ><br>
+        
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4" cols="40">{{ request.user.profile.bio|safe }}</textarea><br> <!-- Bio with predefined size -->
+        
+        <label for="profileimg">Profile Image:</label>
+        <input type="file" id="profileimg" name="profileimg"><br>
+        
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('bio');
+</script>
+
+{% endblock %}

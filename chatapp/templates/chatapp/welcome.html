@@ -1,0 +1,13 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <h2 class="auth-title">Welcome to ChatMe</h2>
+    <p  class="welcome-message">Connect with friends and start chatting today!</p>
+    <a href="{% url 'login' %}" class="login-link">Login</a>
+    <div class="auth-options">
+        <p>Don't have an account? <a href="{% url 'signup' %}" class="signup-link">Sign up</a></p>
+    </div>
+</div>
+{% endblock %}

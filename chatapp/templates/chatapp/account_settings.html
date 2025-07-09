@@ -1,0 +1,41 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <h2 class="auth-title">Account Settings</h2>
+
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="POST" class="settings-form">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" value="{{ user.username }}" required class="rounded-input"/>
+        </div>
+        <div class="input-group">
+            <label for="password">New Password (leave blank to keep current)</label>
+            <input type="password" id="password" name="password" class="rounded-input"/>
+        </div>
+        <div class="input-group">
+            <label for="confirm_password">Confirm New Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="rounded-input"/>
+        </div>
+        <button type="submit" class="settings-button rounded-button">Save Changes</button>
+    </form>
+
+    <div class="settings-options">
+        <p>Want to delete your account?</p>
+        <form method="POST" action="{% url 'delete_account' %}">
+            {% csrf_token %}
+            <button type="submit" class="delete-account-button rounded-button">Delete Account</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

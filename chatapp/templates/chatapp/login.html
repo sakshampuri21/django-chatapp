@@ -1,0 +1,34 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="auth-container">
+    <h2 class="auth-title">Welcome to ChatMe</h2>
+
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <form method="POST" class="auth-form">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required class="rounded-input"/>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required class="rounded-input"/>
+        </div>
+        <!-- {{ form.as_p }} -->
+        <button type="submit" class="auth-button">Login</button>
+    </form>
+
+    <div class="auth-options">
+        <p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+    </div>
+</div>
+{% endblock %}

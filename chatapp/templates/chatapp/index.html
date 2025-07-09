@@ -1,0 +1,145 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="chat-container">
+    <div class="app-header">
+        <div class="app-title">ChatMe</div>
+        
+        {% if user %}
+        <div class="profile-picture-container">
+            <img src="{{ user.profileimg.url }}" alt="Profile picture" class="profile-picture rounded-image"/>
+        </div>
+
+        <div class="profile-header">
+            <p class="username">@{{ request.user.username }}</p>
+        </div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'logout' %}" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="messages-section">
+        <h2 class="section-title">Friends</h2>
+        <div class="friend-list">
+    {% for friend in friends %}
+        <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; {% if friend in friends_with_unread_messages %} background-color: #00F4FF; {% endif %}">
+            <a href="{% url 'send_message' friend.id %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; flex-grow: 1;">
+                <img src="{{ friend.profile.profileimg.url|default:'/media/images/defaultimage.jpeg' }}" alt="{{ friend.username }}'s profile picture" class="friend-picture rounded-image" style="margin-right: 10px;"/>
+                <p class="friend-name">{{ friend.username }}</p>
+                {% if friend in friends_with_unread_messages %}
+                    <span class="unread-indicator" style="background-color: red; border-radius: 50%; width: 10px; height: 10px; display: inline-block; margin-left: 5px;"></span>
+                {% endif %}
+            </a>
+            <div style="display: flex; align-items: center;">
+                <form action="{% url 'block_friend' friend.id %}" method="POST" style="margin-right: 10px;">
+                    {% csrf_token %}
+                    <button type="submit" style="background:none; border:none; color:darkred; cursor:pointer;">
+                        <i class="fas fa-ban"></i> Block
+                    </button>
+                </form>
+                <form action="{% url 'remove_friend' friend.id %}" method="POST" style="margin-left: 10px;">
+                    {% csrf_token %}
+                    <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
+                        <i class="fas fa-user-minus"></i> Remove
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% empty %}
+        <p>No friends found.</p>
+    {% endfor %}
+</div>
+
+    </div>
+
+    <!-- Blocked Friends Section -->
+    <div id="blocked-friends-container" class="blocked-friends" style="display: none; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
+        <h2 class="section-title">Blocked Friends</h2>
+        
+        <!-- Scrollable list container -->
+        <div class="scrollable-friends" style="max-height: 300px; overflow-y: auto;">
+            <div class="blocked-friend-list">
+                {% for blocked_friend in blocked_friends %}
+                    <div class="blocked-friend-item" style="margin-bottom: 10px; display: flex; align-items: center;">
+                        <img src="{{ blocked_friend.profile.profileimg.url|default:'/media/images/defaultimage.jpeg' }}" alt="{{ blocked_friend.username }}'s profile picture" class="friend-picture rounded-image" style="margin-right: 10px;"/>
+                        <p class="friend-name">{{ blocked_friend.username }}</p>
+                        <form action="{% url 'unblock_friend' blocked_friend.id %}" method="POST" style="margin-left: auto;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; color:green; cursor:pointer;">
+                                <i class="fas fa-user-check"></i> Unblock
+                            </button>
+                        </form>
+                    </div>
+                {% empty %}
+                    <p>No blocked friends found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="bottom-navigation">
+    <div id="search-friend-container" style="display: none; position: absolute; bottom: 70px; right: 20px;">
+        <form method="GET" action="{% url 'search_friends' %}" class="search-form">
+            <input type="text" name="query" placeholder="Search for friends..." required class="search-input"/>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+    <button class="nav-button" id="add-friend-btn">
+        <i class="fas fa-plus"></i>
+    </button>
+    <a href="{% url 'settings' %}" class="settings-link">
+        <button class="nav-button">
+            <i class="fas fa-cog"></i>
+        </button>
+    </a>
+    <button class="nav-button" id="blocked-friends-btn">
+        <i class="fas fa-user-lock"></i>
+    </button>
+</div>
+
+<script>
+document.getElementById('add-friend-btn').onclick = function(event) {
+    event.stopPropagation();
+    var searchContainer = document.getElementById('search-friend-container');
+    if (searchContainer) {
+        searchContainer.style.display = searchContainer.style.display === 'block' ? 'none' : 'block';
+    }
+};
+
+document.getElementById('blocked-friends-btn').onclick = function(event) {
+    event.stopPropagation();
+    var blockedContainer = document.getElementById('blocked-friends-container');
+    if (blockedContainer) {
+        blockedContainer.style.display = blockedContainer.style.display === 'block' ? 'none' : 'block';
+    }
+};
+
+document.addEventListener('click', function(event) {
+    var searchContainer = document.getElementById('search-friend-container');
+    var addFriendButton = document.getElementById('add-friend-btn');
+    var blockedContainer = document.getElementById('blocked-friends-container');
+    var blockedFriendsButton = document.getElementById('blocked-friends-btn');
+
+    if (searchContainer && !searchContainer.contains(event.target) && event.target !== addFriendButton) {
+        searchContainer.style.display = 'none';
+    }
+    if (blockedContainer && !blockedContainer.contains(event.target) && event.target !== blockedFriendsButton) {
+        blockedContainer.style.display = 'none';
+    }
+});
+</script>
+{% endblock %}

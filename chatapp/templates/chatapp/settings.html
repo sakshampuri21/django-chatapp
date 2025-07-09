@@ -1,0 +1,68 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="settings-background">
+    <div class="settings-container">
+        <h1>Settings</h1>
+        <div class="settings-options">
+            <a href="{% url 'profile_settings' %}" class="settings-option">Profile Settings</a>
+            <a href="{% url 'account_settings' %}" class="settings-option">Account Settings</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #673AB7; /* Blue background for the entire page */
+        color: #fff; /* White text color */
+        font-family: Arial, sans-serif; /* Set a default font for the body */
+    }
+
+    .settings-background {
+        display: flex;
+        justify-content: center; /* Center the container horizontally */
+        align-items: center; /* Center the container vertically */
+        height: 100vh; /* Full viewport height */
+        padding: 20px; /* Add some padding */
+    }
+
+    .settings-container {
+        padding: 40px; /* Increased padding for a spacious look */
+        text-align: center;
+        background-color: #ffffff; /* White background for the settings container */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        max-width: 500px; /* Limit the width */
+        width: 100%; /* Make it responsive */
+    }
+
+    h1 {
+        font-size: 28px; /* Larger font size for the header */
+        color: #333; /* Dark text color */
+        margin-bottom: 20px; /* Space below the header */
+    }
+
+    .settings-options {
+        margin-top: 20px;
+    }
+
+    .settings-option {
+        display: block;
+        margin: 10px 0;
+        padding: 15px; /* Increased padding for buttons */
+        background-color: #007bff; /* Primary color for buttons */
+        border-radius: 5px;
+        text-decoration: none;
+        color: #ffffff; /* White text color for contrast */
+        font-size: 18px; /* Larger font size */
+        transition: background-color 0.3s, transform 0.2s; /* Smooth transition for hover effects */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+    }
+
+    .settings-option:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        transform: translateY(-2px); /* Slight lift effect */
+    }
+</style>
+{% endblock %}

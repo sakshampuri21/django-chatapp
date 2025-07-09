@@ -1,0 +1,66 @@
+{% extends 'chatapp/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="search-results-container">
+    <h2>Search Results</h2>
+    <div class="friend-list">
+        {% for friend in friends %}
+            <div class="friend-item">
+                <img src="{{ friend.profileimg.url|default:'/media/images/defaultimage.jpeg' }}" alt="{{ friend.user.username }}'s profile picture" class="friend-picture rounded-image"/>
+                <p class="friend-name">{{ friend.user.username }}</p>
+                <form method="POST" action="{% url 'add_friend' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="friend_id" value="{{ friend.user.id }}">
+                    <button type="submit" class="add-friend-button">Add Friend</button>
+                </form>
+            </div>
+        {% empty %}
+            <p>No friends found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .friend-list {
+        display: flex;
+        flex-direction: column; /* Arrange friends vertically */
+    }
+
+    .friend-item {
+        display: flex; /* Flexbox to align items */
+        align-items: center; /* Center items vertically */
+        margin-bottom: 10px; /* Space between friends */
+        padding: 10px; /* Padding inside the box */
+        border: 1px solid #ccc; /* Border around the box */
+        border-radius: 8px; /* Rounded corners */
+        background-color: #f9f9f9; /* Light background color */
+    }
+
+    .friend-picture {
+        width: 40px; /* Set width for the profile picture */
+        height: 40px; /* Set height for the profile picture */
+        border-radius: 50%; /* Make it circular */
+        margin-right: 10px; /* Space between picture and name */
+    }
+
+    .friend-name {
+        font-size: 16px; /* Font size for the friend's name */
+        font-weight: bold; /* Bold font for better visibility */
+        margin-right: 10px; /* Space between name and button */
+    }
+
+    .add-friend-button {
+        background-color: #007bff; /* Button color */
+        color: white; /* Text color */
+        border: none; /* No border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 5px 10px; /* Padding */
+        cursor: pointer; /* Pointer on hover */
+    }
+
+    .add-friend-button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+</style>
+{% endblock %}

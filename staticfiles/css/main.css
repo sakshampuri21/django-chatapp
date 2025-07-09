@@ -1,0 +1,438 @@
+/* General styles for the body */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #7C4DFF; /* Background color from the reference image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Chat Container */
+.chat-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #FFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    overflow: hidden;
+}
+
+/* Header styling */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.app-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #673AB7; /* Adjust title color */
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+}
+
+.profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.username {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Messages Section */
+.messages-section {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+    padding-right: 10px; /* Add padding for scroll bar */
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.notification-container {
+    margin-bottom: 20px; /* Space below the notification container */
+}
+
+.message-container {
+    display: block; /* Makes the anchor tag behave like a block element */
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit text color */
+}
+
+.message {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F3E5F5;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.message:hover {
+    background-color: #E1BEE7; /* Change background color on hover */
+}
+
+.message-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.sender-info {
+    display: flex;
+    align-items: center;
+}
+
+.sender-name {
+    font-weight: bold;
+    color: #333;
+    margin-left: 10px; /* Space between picture and name */
+}
+
+.sender-picture {
+    width: 40px; /* Set width for the profile picture */
+    height: 40px; /* Set height for the profile picture */
+    border-radius: 50%; /* Make it circular */
+}
+
+/* Message Text */
+.message-text {
+    font-size: 14px;
+    color: #616161;
+}
+
+.message-count {
+    background-color: #7E57C2;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Bottom Navigation */
+.bottom-navigation {
+    display: flex;
+    justify-content: space-around;
+    background-color: #512DA8;
+    padding: 10px;
+    border-radius: 20px 20px 0 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.nav-button {
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-button:hover {
+    background-color: #d1c4e9;
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+.nav-icon {
+    color: #512DA8;
+    font-size: 24px;
+}
+
+@media (max-width: 400px) {
+    .nav-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-icon {
+        font-size: 20px;
+    }
+}
+
+.rounded-textarea {
+    border: 2px solid #673AB7; /* Change to desired border color */
+    border-radius: 20px; /* Keep the border rounded */
+    padding: 10px; /* Add some padding */
+    width: 100%; /* Full width */
+    height: 50px; /* Set a specific height (adjust as needed) */
+    resize: none; /* Prevent resizing */
+    outline: none; /* Remove outline on focus */
+}
+
+/* Style the placeholder text */
+.rounded-textarea::placeholder {
+    color: #999; /* Placeholder text color */
+    opacity: 1; /* Ensure full opacity */
+}
+
+/* General styles for the auth container */
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    background-color: #FFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+
+/* Title styling */
+.auth-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #673AB7;
+    margin-bottom: 20px;
+}
+
+.welcome-message {
+    font-size: 20px; /* Increase font size for better readability */
+    font-weight: 600; /* Bold for emphasis */
+    color: #007bff; /* Blue text color */
+    margin-bottom: 20px; /* Space below the message */
+    padding: 15px; /* Padding for better spacing */
+    background-color: rgba(0, 123, 255, 0.1); /* Light blue background */
+    border: 1px solid #007bff; /* Blue border */
+    border-radius: 8px; /* Rounded corners */
+    text-align: center; /* Center text */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: transform 0.3s, background-color 0.3s; /* Smooth transition */
+}
+
+.welcome-message:hover {
+    transform: translateY(-2px); /* Lift effect on hover */
+    background-color: rgba(0, 123, 255, 0.2); /* Darker shade on hover */
+}
+
+
+
+.login-link {
+    display: inline-block; /* Make it behave like a button */
+    padding: 12px 24px; /* Padding for button-like appearance */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* Text color */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.login-link:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Container for the logout button */
+.logout-form {
+    display: inline-block; /* Allows for inline positioning */
+    margin-left: auto; /* Pushes the button to the right */
+}
+
+/* Logout button styling */
+.logout-button {
+    background-color: #4c9aff; /* Red color for logout */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding around the text */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Hover effect */
+.logout-button:hover {
+    background-color: #e63939; /* Darker red on hover */
+}
+
+/* Active effect */
+.logout-button:active {
+    background-color: #d62828; /* Even darker red when clicked */
+}
+
+/* Add a focus effect for accessibility */
+.logout-button:focus {
+    outline: 2px solid #ffffff; /* White outline on focus */
+    outline-offset: 2px; /* Space between outline and button */
+}
+
+
+.signup-link {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.signup-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Input group styling */
+.input-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.rounded-input {
+    border: 2px solid #673AB7;
+    border-radius: 20px;
+    padding: 10px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.rounded-input:focus {
+    border-color: #512DA8;
+}
+
+
+
+/* Button styling */
+.auth-button {
+    background-color: #673AB7;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-button:hover {
+    background-color: #512DA8;
+}
+
+/* Auth options styling */
+.auth-options {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.auth-options a {
+    color: #673AB7;
+    text-decoration: none;
+}
+
+.auth-options a:hover {
+    text-decoration: underline;
+}
+
+.settings-link {
+    text-decoration: none; /* Removes underline */
+}
+
+.rounded-button {
+    padding: 10px 15px; /* Adjust padding */
+    border-radius: 5px; /* Rounded corners */
+    border: 1px solid #ccc; /* Border style */
+    background-color: #13125f; /* Background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer on hover */
+}
+
+.rounded-button:hover {
+    background-color: #a04556; /* Darker green on hover */
+}
+
+.friend-list {
+    display: flex;
+    flex-direction: column; /* Arrange friends vertically */
+    margin-top: 10px;
+}
+
+.friend-item {
+    display: flex; /* Flexbox to align items */
+    align-items: center; /* Center items vertically */
+    margin-bottom: 10px; /* Space between friends */
+    padding: 10px; /* Padding inside the box */
+    border: 2px solid #ccc; /* Border around the box */
+    border-radius: 15px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit text color */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.friend-item:hover {
+    background-color: #e0e0e0; /* Change background color on hover */
+}
+
+.friend-picture {
+    width: 40px; /* Set width for the profile picture */
+    height: 40px; /* Set height for the profile picture */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 10px; /* Space between picture and name */
+}
+
+.friend-name {
+    font-size: 16px; /* Font size for the friend's name */
+    font-weight: bold; /* Bold font for better visibility */
+}
+
+.friend-item .delete-friend {
+    margin-left: 10px;
+    color: red; /* Change color to red for visibility */
+    cursor: pointer;
+}
+
