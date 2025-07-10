@@ -93,7 +93,7 @@ def index(request):
     friends_with_unread_messages = [friend for friend, count in unread_counts.items() if count > 0]
 
     # Get all blocked friends
-    blocked_friends = User.objects.filter(id__in=blocked_users)
+    blocked_friends = User.objects.filter(id__in=blocked_users) # Fetches User objects for those the logged-in user has blocked
 
     context = {
         "user": user_profile,
