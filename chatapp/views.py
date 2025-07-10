@@ -28,13 +28,13 @@ def signup(request):
                 return redirect('signup')
             else:
                 user=User.objects.create_user(username=username,password=password)
-                user.save()
+                # user.save()
                 # login and redirect to settings page
 
                 #create a profile object for the new user
                 user_model=User.objects.get(username=username)
                 new_profile=Profile.objects.create(user=user_model)
-                new_profile.save()
+                # new_profile.save()
                 messages.success(request, "User created successfully! Please log in.")
                 return redirect('signup')
 
