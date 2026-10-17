@@ -32,24 +32,27 @@
 
     <div class="messages-section">
         <h2 class="section-title">Friends</h2>
-        <div class="friend-list">
-    {% for friend in friends %}
-        <div class="friend-item" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; {% if friend in friends_with_unread_messages %} background-color: #00F4FF; {% endif %}">
-            <a href="{% url 'send_message' friend.id %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; flex-grow: 1;">
-                <img src="{{ friend.profile.profileimg.url|default:'/media/images/defaultimage.jpeg' }}" alt="{{ friend.username }}'s profile picture" class="friend-picture rounded-image" style="margin-right: 10px;"/>
-                <p class="friend-name">{{ friend.username }}</p>
-                {% if friend in friends_with_unread_messages %}
-                    <span class="unread-indicator" style="background-color: red; border-radius: 50%; width: 10px; height: 10px; display: inline-block; margin-left: 5px;"></span>
-                {% endif %}
+        <div class="friend-list" id="friendList">
+    {% for item in friend_data %}
+        <div class="friend-item" data-friend-id="{{ item.user.id }}" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; {% if item.unread %}background-color: #00F4FF;{% endif %}">
+            <a href="{% url 'send_message' item.user.id %}" style="text-decoration: none; color: inherit; display: flex; align-items: center; flex-grow: 1;">
+                <img src="{{ item.user.profile.profileimg.url|default:'/media/images/defaultimage.jpeg' }}" alt="{{ item.user.username }}'s profile picture" class="friend-picture rounded-image" style="margin-right: 10px;"/>
+                <div>
+                    <p class="friend-name">
+                        {{ item.user.username }}
+                        <span class="unread-indicator" style="background-color: red; border-radius: 50%; width: 10px; height: 10px; margin-left: 5px; display: {% if item.unread %}inline-block{% else %}none{% endif %};"></span>
+                    </p>
+                    <p class="last-msg" style="font-size: 12px; color: #666; margin: 2px 0 0 0;">{% if item.last %}{% if item.last.sender_id == request.user.id %}You: {% endif %}{{ item.last.content|truncatechars:35 }}{% endif %}</p>
+                </div>
             </a>
             <div style="display: flex; align-items: center;">
-                <form action="{% url 'block_friend' friend.id %}" method="POST" style="margin-right: 10px;">
+                <form action="{% url 'block_friend' item.user.id %}" method="POST" style="margin-right: 10px;">
                     {% csrf_token %}
                     <button type="submit" style="background:none; border:none; color:darkred; cursor:pointer;">
                         <i class="fas fa-ban"></i> Block
                     </button>
                 </form>
-                <form action="{% url 'remove_friend' friend.id %}" method="POST" style="margin-left: 10px;">
+                <form action="{% url 'remove_friend' item.user.id %}" method="POST" style="margin-left: 10px;">
                     {% csrf_token %}
                     <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">
                         <i class="fas fa-user-minus"></i> Remove
@@ -141,5 +144,36 @@ document.addEventListener('click', function(event) {
         blockedContainer.style.display = 'none';
     }
 });
+
+/* ---------- Live updates over WebSocket ---------- */
+(function () {
+    var scheme = location.protocol === "https:" ? "wss" : "ws";
+    var friendList = document.getElementById('friendList');
+
+    function handleNotify(d) {
+        var item = friendList.querySelector('.friend-item[data-friend-id="' + d.from_id + '"]');
+        if (!item) return;   // not a friend shown on this page
+
+        // update the preview line under the name (textContent avoids XSS)
+        var text = d.content.length > 35 ? d.content.slice(0, 32) + "..." : d.content;
+        item.querySelector('.last-msg').textContent = (d.mine ? "You: " : "") + text;
+
+        // show the dot and highlight only for messages from the other person
+        if (!d.mine) {
+            item.style.backgroundColor = "#00F4FF";
+            item.querySelector('.unread-indicator').style.display = "inline-block";
+        }
+
+        // move this conversation to the top
+        friendList.prepend(item);
+    }
+
+    function connect() {
+        var ws = new WebSocket(scheme + "://" + location.host + "/ws/notify/");
+        ws.onmessage = function (e) { handleNotify(JSON.parse(e.data)); };
+        ws.onclose = function () { setTimeout(connect, 2000); };
+    }
+    connect();
+})();
 </script>
 {% endblock %}

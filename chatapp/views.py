@@ -92,6 +92,24 @@ def index(request):
     # Identify friends with unread messages
     friends_with_unread_messages = [friend for friend, count in unread_counts.items() if count > 0]
 
+    # Build one entry per friend: the user, unread count, and last message (for the preview line)
+    friend_data = []
+    for friend in friend_profiles:
+        last_message = Message.objects.filter(
+            Q(sender=request.user, recipient=friend) | Q(sender=friend, recipient=request.user)
+        ).order_by('-timestamp').first()
+        friend_data.append({
+            "user": friend,
+            "unread": unread_counts[friend],
+            "last": last_message,
+        })
+
+    # Newest conversation first; friends with no messages go to the bottom
+    friend_data.sort(
+        key=lambda x: x["last"].timestamp.timestamp() if x["last"] else 0,
+        reverse=True
+    )
+
     # Get all blocked friends
     blocked_friends = User.objects.filter(id__in=blocked_users) # Fetches User objects for those the logged-in user has blocked
 
@@ -101,6 +119,7 @@ def index(request):
         "unread_counts": unread_counts,
         "blocked_friends": blocked_friends,  # Pass blocked friends to the context
         "friends_with_unread_messages": friends_with_unread_messages,  # Pass friends with unread messages
+        "friend_data": friend_data,  # Friends with unread count + last message, newest first
     }
     return render(request, "chatapp/index.html", context)
 
